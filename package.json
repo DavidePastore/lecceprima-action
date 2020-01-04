@@ -1,6 +1,6 @@
 {
   "name": "lecceprima-action",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "LeccePrima action",
   "main": "index.js",
   "scripts": {
