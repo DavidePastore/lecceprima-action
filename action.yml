@@ -1,10 +1,10 @@
 name: 'LeccePrima'
 description: 'LeccePrima action '
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  db-directory:  # id of input
+    description: 'The database directory'
     required: true
-    default: 'World'
+    default: 'lecceprima-rss-db'
 outputs:
   time: # id of output
     description: 'The time we greeted you'
