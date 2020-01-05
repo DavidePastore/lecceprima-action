@@ -1,10 +1,16 @@
 name: 'LeccePrima'
 description: 'LeccePrima action '
 inputs:
-  db-directory:  # id of input
+  db-directory:
     description: 'The database directory'
     required: true
     default: 'lecceprima-rss-db'
+  telegram-token:
+    description: 'The Telegram token'
+    required: true
+  telegram-chat-id:
+    description: 'The Telegram chat id'
+    required: true
 outputs:
   time: # id of output
     description: 'The time we greeted you'

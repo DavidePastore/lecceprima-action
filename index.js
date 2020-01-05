@@ -4,10 +4,14 @@ const Parser = require('rss-parser');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const fs = require('fs');
+const TelegramBot = require('node-telegram-bot-api');
 
 try {
   // `db-directory` input defined in action metadata file
   const dbDirectory = core.getInput('db-directory');
+  const telegramToken = core.getInput('telegram-token');
+  const telegramChatId = core.getInput('telegram-chat-id');
+  const bot = new TelegramBot(telegramToken, {polling: true});
   console.log(`The database directory is ${dbDirectory}`);
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
@@ -46,12 +50,18 @@ try {
 
       // Check if the item already exists
       if (!foundItem) {
-        // TODO Write it on Telegram
-
-        // TODO If everything is fine with Telegram message sending, insert a new item
-        collection
-          .push(item)
-          .write();
+        // Send the message on Telegram
+        bot.sendMessage(telegramChatId, `<a href="${item.link}">${item.title}</a>`,
+          {parse_mode : 'HTML'}).then((response) => {
+          // If everything is fine with Telegram message sending, insert a new item
+          console.log(`Adding item ${item.title}.`);
+          collection
+            .push(item)
+            .write();
+          }).catch((error) => {
+          console.log(error.code);
+          console.log(error.response.body);
+        });
       }
     });
     console.log('No more RSS feed to read');
