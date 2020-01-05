@@ -25,7 +25,7 @@ try {
     console.log(feed.title);
     console.log(`Feed items are: ${feed.items.length}`);
 
-    if (!fs.existsSync(dbDirectory)){
+    if (!fs.existsSync(dbDirectory)) {
         fs.mkdirSync(dbDirectory);
     }
 
@@ -36,24 +36,22 @@ try {
       let dbFile = `${dbDirectory}/${onlyDate}.json`;
       const adapter = new FileSync(dbFile);
       const db = low(adapter);
-      db.defaults({ items: [] })
-        .write();
       let collection = db
         .defaults({ items: [] })
         .get('items');
       
-      let foundItem = items
+      let foundItem = collection
         .find({ link: item.link })
         .value();
 
       // Check if the item already exists
       if (!foundItem) {
-        // Insert a new item
+        // TODO Write it on Telegram
+
+        // TODO If everything is fine with Telegram message sending, insert a new item
         collection
           .insert(item)
           .write();
-
-        // TODO Write it on Telegram
       }
     });
     console.log('No more RSS feed to read');
