@@ -206,7 +206,7 @@ try {
 
         // TODO If everything is fine with Telegram message sending, insert a new item
         collection
-          .insert(item)
+          .push(item)
           .write();
       }
     });
