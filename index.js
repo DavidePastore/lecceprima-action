@@ -5,6 +5,7 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
+const messageSendingTimeout = 10000; // to be lower than 20 messages for minute https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
 
 try {
   // `db-directory` input defined in action metadata file
@@ -33,7 +34,7 @@ try {
         fs.mkdirSync(dbDirectory);
     }
 
-    feed.items.forEach(item => {
+    feed.items.forEach((item, index) => {
       console.log(`${item.title} : ${item.link} at ${item.pubDate} or ${item.isoDate}`);
       let onlyDate = item.isoDate.substring(0, 10);
       console.log(`Only date is: ${onlyDate}`);
@@ -50,18 +51,20 @@ try {
 
       // Check if the item already exists
       if (!foundItem) {
-        // Send the message on Telegram
-        bot.sendMessage(telegramChatId, `<a href="${item.link}">${item.title}</a>`,
-          {parse_mode : 'HTML'}).then((response) => {
-          // If everything is fine with Telegram message sending, insert a new item
-          console.log(`Adding item ${item.title}.`);
-          collection
-            .push(item)
-            .write();
-          }).catch((error) => {
-          console.log(error.code);
-          console.log(error.response.body);
-        });
+        // Send the message on Telegram every messageSendingTimeout milliseconds
+        setTimeout(function() {
+          bot.sendMessage(telegramChatId, `<a href="${item.link}">${item.title}</a>`,
+            {parse_mode : 'HTML'}).then((response) => {
+            // If everything is fine with Telegram message sending, insert a new item
+            console.log(`Adding item ${item.title}.`);
+            collection
+              .push(item)
+              .write();
+            }).catch((error) => {
+            console.log(error.code);
+            console.log(error.response.body);
+          });
+        }, messageSendingTimeout * index);
       }
     });
     console.log('No more RSS feed to read');
