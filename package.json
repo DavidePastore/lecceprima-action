@@ -20,6 +20,7 @@
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/github": "^2.0.0",
+    "bl": "^1.2.3",
     "lowdb": "^1.0.0",
     "node-telegram-bot-api": "^0.40.0",
     "rss-parser": "^3.7.3"
