@@ -19,7 +19,7 @@
   "homepage": "https://github.com/DavidePastore/lecceprima-action#readme",
   "dependencies": {
     "@actions/core": "^1.9.1",
-    "@actions/github": "^2.0.0",
+    "@actions/github": "^6.0.0",
     "lowdb": "^1.0.0",
     "node-telegram-bot-api": "^0.64.0",
     "rss-parser": "^3.13.0"
