@@ -23,5 +23,8 @@
     "lowdb": "^1.0.0",
     "node-telegram-bot-api": "^1.1.0",
     "rss-parser": "^3.13.0"
+  },
+  "overrides": {
+    "undici": "^6.29.1"
   }
 }
